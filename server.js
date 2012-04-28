@@ -92,7 +92,7 @@ var http = require('http');
 http.createServer(function (req, res) {
   var pu, cb, ret;
   pu = url.parse(req.url, true);
-  pu.path = pu.path.replace(/(\.json|\/)?$/, '/')
+  pu.path = pu.path.split('?')[0].replace(/(\.json|\/)?$/, '/');
   if (pu.path === "/refreshall/") {
     docs = {};
     seen = {};
@@ -100,7 +100,7 @@ http.createServer(function (req, res) {
     load(res);
   } else if (pu.path === '/') {
     res.writeHead(200, {'Content-Type' : 'text/html'});
-    res.end("<html><body>Just a Simple JSON Service. See <a href='https://github.com/jostylr/simplejsonp'>GitHub SimpleJSONP</a></body></html>")
+    res.end("<html><body>Just a Simple JSON Service. See <a href='https://github.com/jostylr/simplejsonp'>GitHub SimpleJSONP</a></body></html>");
   } else {
     if (pu.query) {
       cb = pu.query.callback;
