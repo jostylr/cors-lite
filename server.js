@@ -4,8 +4,8 @@ var https = require('https');
 var url = require('url');
 var request = require('request');
 
-var loadStart = 'starturl.txt';
-var loadTop = 'top';
+var loadStart = 'http://jostylr.github.com/jsonindex.txt';
+var loadTop = 'jostylr';
 
 var errjson = JSON.stringify({"error" : "no such path"});
 
@@ -13,17 +13,21 @@ var seen = {};
 var docs = {};
 var paths = {};
 
-var jfetch = function (url) {
+var jfetch = function (url, res) {
   request(url, function (error, response, body) {
     if (!error && response.statusCode === 200) {
-        try {
-          docs[url] = JSON.stringify(JSON.parse(body));
-        } catch (e) {
-          docs[url] = JSON.stringify({"error" : e, "body" : body});
-        }
-      } else {
-        console.log("error jfetch", error, response.statusCode);
+      try {
+        docs[url] = JSON.stringify(JSON.parse(body));
+      } catch (e) {
+        docs[url] = JSON.stringify({"error" : e, "body" : body});
       }
+    } else {
+      console.log("error jfetch", error, response.statusCode);
+    }
+    if (res) {
+      res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
+      res.end("Path loaded: " + url);
+    }
   });
 };
 
@@ -92,8 +96,18 @@ var http = require('http');
 http.createServer(function (req, res) {
   var pu, cb, ret;
   pu = url.parse(req.url, true);
+  if (pu.path.match(/\/.+\/refreshJSON\/?/)) {
+    pu.path = pu.path.replace(/(\.json)?\/refreshJSON\/?$/, '/');
+    if (paths.hasOwnProperty(pu.path)) {
+      jfetch(paths[pu.path], res);
+    } else {
+      res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
+      res.end("Path not found: " + pu.path); 
+    }
+    return;
+  }
   pu.path = pu.path.split('?')[0].replace(/(\.json|\/)?$/, '/');
-  if (pu.path === "/refreshall/") {
+  if (pu.path === "/refreshAll/") {
     docs = {};
     seen = {};
     paths = {};
@@ -105,7 +119,7 @@ http.createServer(function (req, res) {
     if (pu.query) {
       cb = pu.query.callback;
     }
-    ret = docs[paths[pu.path]] || errjson;
+    ret = docs[paths[pu.path]]|| errjson;
     if (cb) {
       res.writeHead(200, {'Content-Type': 'text/javascript'});
       res.end(cb+"("+ ret +")");    
