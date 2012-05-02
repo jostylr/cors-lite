@@ -3,13 +3,13 @@
   "node":"0.6.12",
   "author":"jostylr <jostylr@gmail.com> (http://jostylr.tumblr.com)",
   "version" : "0.1.0",
-  "description" : "a server that serves JSON via CORS/JSONP".
+  "description" : "a server that serves JSON via CORS/JSONP",
   "homepage" : "https://github.com/jostylr/simplejsonp",
   "repository" :
     { "type" : "git"
     , "url" : "http://github.com/jostylr/simplejsonp"
     },
   "private" : true,
-  , "engines" : ["node >= 0.6.1"]
+  "engines" : ["node >= 0.6.1"],
   "dependencies" : { "request" : "2.9.202" }
 }
