@@ -1,17 +1,19 @@
 /*jslint node:true*/
 
+//change this to have any paths (start with / and end with / for key) and the value is the source JSON.
+var paths = {
+  "/thomaspark/bootswatch/" : "http://bootswatch.com/api/themes.json"
+  , "/bootswatch/" : "http://bootswatch.com/api/themes.json"
+};
+
+
 var https = require('https');
 var url = require('url');
 var request = require('request');
 
-var loadStart = 'http://jostylr.github.com/jsonindex.txt';
-var loadTop = 'jostylr';
-
 var errjson = JSON.stringify({"error" : "no such path"});
 
-var seen = {};
 var docs = {};
-var paths = {};
 
 var jfetch = function (url, res) {
   request(url, function (error, response, body) {
@@ -26,78 +28,29 @@ var jfetch = function (url, res) {
     }
     if (res) {
       res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
-      res.end("Path loaded: " + url);
+      res.end("Path loaded. \n" + docs[url]  );
     }
   });
 };
 
-var idxq = [];
 
-var type = function (line) {
-  if (line[1].match(/\.txt$/)) {
-    return "index";
-  } else {
-    return "json";
+// load initial values
+var path, lurl; 
+for (path in paths) {
+  lurl  = paths[path];
+  if (!docs.hasOwnProperty(lurl)) {
+    docs[url] = 1;
+    jfetch(lurl);
   }
-};
-
-var checkExists = function (line) {
-  return false; 
-};
-
-var ifetch = function (top, res) {
-  request(top[1], function (error, response, body) {
-    
-    var i, n, line
-      , lines = body.split('\n');
-    
-    
-    if (!error && response.statusCode === 200) {  
-      n = lines.length;
-      for (i = 0; i < n; i += 1 ) {
-        line = lines[i].trim().split(" ");
-        if (checkExists(line) ) {
-          continue;
-        }
-        seen[line[1]] = "json";
-      
-        if (type(line) === "index") {
-          idxq.push(line);
-        } else {
-          paths["/" + top[0] + "/" + line[0] + '/' ] = line[1];
-          jfetch(line[1]);              
-        }
-      }
-    } else {
-      console.log("error", error, response.statusCode);
-    }
-    
-    if (idxq.length > 0) {
-      ifetch(idxq.shift(), res);
-    } else {
-      if (res) {
-        res.end("all indexes have been loaded");          
-      } 
-    }
-    
-  }); //request cb
-};
-
-var load = function (res) {
-  seen[loadStart] = "index";
-  ifetch([loadTop, loadStart], res);
-};
-
-load();
-
+}
 
 
 var http = require('http');
 http.createServer(function (req, res) {
   var pu, cb, ret;
   pu = url.parse(req.url, true);
-  if (pu.path.match(/\/.+\/refreshJSON\/?/)) {
-    pu.path = pu.path.replace(/(\.json)?\/refreshJSON\/?$/, '/');
+  if (pu.path.match(/\/.+\/refresh\/?/)) {
+    pu.path = pu.path.replace(/(\.json)?\/refresh\/?$/, '/');
     if (paths.hasOwnProperty(pu.path)) {
       jfetch(paths[pu.path], res);
     } else {
@@ -107,12 +60,7 @@ http.createServer(function (req, res) {
     return;
   }
   pu.path = pu.path.split('?')[0].replace(/(\.json|\/)?$/, '/');
-  if (pu.path === "/refreshAll/") {
-    docs = {};
-    seen = {};
-    paths = {};
-    load(res);
-  } else if (pu.path === '/') {
+  if (pu.path === '/') {
     res.writeHead(200, {'Content-Type' : 'text/html'});
     res.end("<html><body>Just a Simple JSON Service. See <a href='https://github.com/jostylr/simplejsonp'>GitHub SimpleJSONP</a></body></html>");
   } else {
