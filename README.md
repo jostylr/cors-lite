@@ -1,17 +1,58 @@
-simplejsonp
-===========
-
-A simple jsonp server that server json as CORS with fallback to jsonp
-
-To install, clone the repository. Run node server  at the command line. Go to localhost:3000 to check that the server is up and running.
-
-The top of the server.js file has a hash of path : url.  The path is where the server expects a request to come from and the url is where the JSON data lives. 
-
-Change that hash to point to whatever you want. 
-
-You should be able to host the server on any node server. I use nodester and the steps can be as easy as: clone this repo, modify the path hash, git push it to nodester. Done. See http://nodester.com
+# Cors-lite
 
 
+This is a node program that allows for easy serving of JSON data using CORS with a fallback to JSONP. 
+
+## Install
+You need node installed. Go to 
+
+1. Install [node](http://nodejs.org/)  if not already installed. v.06.17 or higher is recommended. 
+2. Run node server  at the command line: `node server`
+3. Visit localhost:3000 to check that the server is up and running.
+4. Modify paths variable at top of server file to point to your JSON files of interest. Restart server and check.
+   The hash is of the form `path : url`  where the path is where the server expects a request to come from and the url is where the JSON data actually lives. 
+
+## Using JSON
+
+Check out this live working version: http://jsbin.com/epadoh/1/edit#javascript,html
+
+Use [IECors.js](https://github.com/dkastner/jquery.iecors) to use for IE8 (maybe IE9) as at http://jsbin.com/erugun/2/edit#javascript,html,live
+
+One may also want to read: [kendoui](http://www.kendoui.com/blogs/archive/11-10-04/using_cors_with_all_modern_browsers.aspx) 
+
+To useful code snippets using jQuery: 
+
+JSON via CORS: 
+
+    $.get("http://simplejsonp.nodester.com/thomaspark/bootswatch", function (a, b, c) {d = [a, b, c]}, "json")
+
+JSONP: 
+
+    $.get("http://simplejsonp.nodester.com/thomaspark/bootswatch", function (a, b, c) {d = [a, b, c]}, "jsonp")
+
+If you go to any page with jQuery on it and use your web console, you can run this code and check out the results. 
+
+
+## Hosting
+
+You should be able to host the server on any node service. 
+
+I use [nodester](http://nodester.com) and the steps can be as easy as: 
+
+1. Clone this repo
+2. Modify the path hash
+3. git push it to nodester. 
+4. You may need to npm intall request using the nodester command line tool.
+4. Done. See http://nodester.com for actual commands and stuff. You also need to get added to the service.
+
+There is also [nodejitsu](http://nodejitsu.com) and [CloudFoundry](http://cloudfoundry.com) 
+
+Nodester aims to always be free while the others are in free beta with no mention of pricing. 
+
+
+## Disclaimer
+
+This has nothing to do with beverages. Just a descriptive name that is also a playful parody on a certain well-known beverage. 
 
 ### Licensed under MIT license.
 
