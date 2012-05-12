@@ -4,10 +4,10 @@
   "author":"jostylr <jostylr@gmail.com> (http://jostylr.tumblr.com)",
   "version" : "0.1.0",
   "description" : "a server that serves JSON via CORS/JSONP",
-  "homepage" : "https://github.com/jostylr/simplejsonp",
+  "homepage" : "https://github.com/jostylr/cors-lite",
   "repository" :
     { "type" : "git"
-    , "url" : "http://github.com/jostylr/simplejsonp"
+    , "url" : "http://github.com/jostylr/cors-lite"
     },
   "private" : true,
   "engines" : ["node >= 0.6.1"],

@@ -20,7 +20,7 @@ Use [IECors.js](https://github.com/dkastner/jquery.iecors) to use for IE8 (maybe
 
 One may also want to read: [kendoui](http://www.kendoui.com/blogs/archive/11-10-04/using_cors_with_all_modern_browsers.aspx) 
 
-To useful code snippets using jQuery: 
+Two useful code snippets using jQuery: 
 
 JSON via CORS: 
 
@@ -30,7 +30,7 @@ JSONP:
 
     $.get("http://simplejsonp.nodester.com/thomaspark/bootswatch", function (a, b, c) {d = [a, b, c]}, "jsonp")
 
-If you go to any page with jQuery on it and use your web console, you can run this code and check out the results. 
+If you go to any page with jQuery on it (such as this very page) and use your web console, you can run this code and check out the results in the global variable d. Obviously, one should replace the anonymous functions with something much better. 
 
 
 ## Hosting
@@ -56,7 +56,7 @@ This has nothing to do with beverages. Just a descriptive name that is also a pl
 
 ### Licensed under MIT license.
 
-Copyright (c) 2012, James Taylor, https://github.com/jostylr/simplejsonp
+Copyright (c) 2012, James Taylor, https://github.com/jostylr/cors-lite
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
