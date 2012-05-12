@@ -3,6 +3,8 @@
 
 This is a node program that allows for easy serving of JSON data using CORS with a fallback to JSONP. 
 
+The primary use case is a site that is semi-static in its JSON needs. 
+
 ## Install
 You need node installed. Go to 
 
@@ -32,6 +34,7 @@ JSONP:
 
 If you go to any page with jQuery on it (such as this very page) and use your web console, you can run this code and check out the results in the global variable d. Obviously, one should replace the anonymous functions with something much better. 
 
+This project was initiated to provide an API for the semi-static fantastic [bootswatch](http://bootswatch.com) project. 
 
 ## Hosting
 
