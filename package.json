@@ -1,6 +1,6 @@
 {
   "name":"simplejsonp",
-  "node":"0.6.12",
+  "node":"0.6.17",
   "author":"jostylr <jostylr@gmail.com> (http://jostylr.tumblr.com)",
   "version" : "0.1.0",
   "description" : "a server that serves JSON via CORS/JSONP",
